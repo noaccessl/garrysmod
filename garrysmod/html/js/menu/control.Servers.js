@@ -194,6 +194,13 @@ function ControllerServers( $scope, $element, $rootScope, $location )
 	}
 	$rootScope.JoinServer = $scope.JoinServer;
 
+	$scope.PasswordInput = function( e, srv )
+	{
+		if ( e.keyCode == 13 )
+			$scope.JoinServer( srv )
+	}
+	$rootScope.PasswordInput = $scope.PasswordInput;
+
 	$scope.SwitchType = function( type )
 	{
 		if ( RootScope.ServerType == type ) return;
@@ -388,7 +395,7 @@ function CalculateRank( server )
 	var recommended = server.ping;
 
 	if ( server.players == 0 ) recommended += 75; // Server is empty
-	if ( server.players >= server.maxplayers ) recommended += 100; // Server is full, can't join it
+	//if ( server.players >= server.maxplayers ) recommended += 100; // Server is full, can't join it
 	if ( server.pass ) recommended += 300; // Password protected, can't join it
 	if ( server.isAnon ) recommended += 1000; // Anonymous server
 

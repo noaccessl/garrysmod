@@ -10,7 +10,7 @@ end
 
 
 
-local Category = "Humans + Resistance"
+local Category = "#spawnmenu.category.humans_resistance"
 
 AddNPC( {
 	Class = "npc_alyx",
@@ -75,7 +75,7 @@ AddNPC( {
 	Class = "npc_citizen",
 	Category = Category,
 	KeyValues = { citizentype = CT_DOWNTRODDEN, SquadName = "resistance" },
-	Weapons = { "" } -- Tells the spawnmenu that this NPC can use weapons
+	Weapons = { "" } -- Tells the spawnmenu that this NPC can use weapons, but doesn't have any default ones
 } )
 
 AddNPC( {
@@ -112,6 +112,13 @@ AddNPC( {
 	Weapons = { "weapon_pistol", "weapon_smg1" }
 }, "Refugee" )
 
+AddNPC( {
+	Class = "npc_citizen",
+	Category = Category,
+	KeyValues = { citizentype = CT_REBEL, SquadName = "combine", Hostile = "1" },
+	Weapons = { "weapon_pistol", "weapon_smg1", "weapon_ar2", "weapon_shotgun" }
+}, "npc_citizen_enemy" )
+
 if ( IsMounted( "ep2" ) ) then
 	AddNPC( {
 		Name = "#npc_vortigaunt_uriah",
@@ -132,7 +139,7 @@ if ( IsMounted( "lostcoast" ) ) then
 		Class = "npc_fisherman",
 		Category = Category,
 		Weapons = { "weapon_oldmanharpoon" }
-	} ) -- Has no death sequence
+	} ) -- Has no death sequence/ragdoll
 end
 
 if ( IsMounted( "ep2" ) ) then
@@ -140,15 +147,25 @@ if ( IsMounted( "ep2" ) ) then
 		Class = "npc_turret_floor",
 		Category = Category,
 		OnFloor = true,
-		TotalSpawnFlags = 0,
+		TotalSpawnFlags = SF_FLOOR_TURRET_CITIZEN,
 		Rotate = Angle( 0, 180, 0 ),
 		Offset = 2,
-		KeyValues = { SquadName = "overwatch", SpawnFlags = SF_FLOOR_TURRET_CITIZEN }
+		KeyValues = { SquadName = "overwatch" }
 	}, "npc_turret_floor_resistance" )
-
 end
 
-Category = "Zombies + Enemy Aliens"
+if ( IsMounted( "episodic" ) ) then
+	AddNPC( {
+		Class = "npc_rollermine",
+		Category = Category,
+		Offset = 20,
+		KeyValues = { SquadName = "resistance" },
+		SpawnFlags = 262144, -- SF_ROLLERMINE_HACKED
+		NoDrop = true
+	}, "npc_rollermine_hacked" )
+end
+
+Category = "#spawnmenu.category.zombies_aliens"
 
 AddNPC( {
 	Class = "npc_zombie",
@@ -253,7 +270,7 @@ end
 
 
 
-Category = "Animals"
+Category = "#spawnmenu.category.animals"
 
 AddNPC( {
 	Class = "npc_monk",
@@ -281,7 +298,7 @@ AddNPC( {
 
 
 
-Category = "Combine"
+Category = "#spawnmenu.category.combine"
 
 AddNPC( {
 	Class = "npc_metropolice",
@@ -298,6 +315,16 @@ AddNPC( {
 	KeyValues = { SquadName = "overwatch" },
 	NoDrop = true
 } )
+
+-- It is still considered an enemy by friendly NPCs (so that it chases them)
+AddNPC( {
+	Class = "npc_rollermine",
+	Category = Category,
+	Offset = 20,
+	KeyValues = { SquadName = "overwatch" },
+	SpawnFlags = 65536, -- SF_ROLLERMINE_FRIENDLY
+	NoDrop = true
+}, "npc_rollermine_friendly" )
 
 AddNPC( {
 	Class = "npc_turret_floor",
